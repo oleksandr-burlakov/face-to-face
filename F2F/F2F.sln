@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34009.444
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F2F.DLL", "F2F.Domain\F2F.DLL.csproj", "{B6F1BF6D-8C6D-4EAE-8CD6-3859956A7296}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F2F.BLL", "F2F.BLL\F2F.BLL.csproj", "{4FE610E4-BA3E-40F6-A372-42DD08487FD1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B6F1BF6D-8C6D-4EAE-8CD6-3859956A7296}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6F1BF6D-8C6D-4EAE-8CD6-3859956A7296}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6F1BF6D-8C6D-4EAE-8CD6-3859956A7296}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6F1BF6D-8C6D-4EAE-8CD6-3859956A7296}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FE610E4-BA3E-40F6-A372-42DD08487FD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FE610E4-BA3E-40F6-A372-42DD08487FD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FE610E4-BA3E-40F6-A372-42DD08487FD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FE610E4-BA3E-40F6-A372-42DD08487FD1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1DA59545-7819-4F56-99A0-3DEDA59E3898}
+	EndGlobalSection
+EndGlobal
