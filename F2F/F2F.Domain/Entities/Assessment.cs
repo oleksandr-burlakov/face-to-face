@@ -1,7 +1,7 @@
 ﻿using F2F.DLL.Entities;
 using F2F.DLL.Entities.Base;
 
-namespace F2F.Domain.Entities;
+namespace F2F.DLL.Entities;
 
 public class Assessment : BaseEntity
 {

@@ -5,7 +5,9 @@ VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F2F.DLL", "F2F.Domain\F2F.DLL.csproj", "{B6F1BF6D-8C6D-4EAE-8CD6-3859956A7296}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F2F.BLL", "F2F.BLL\F2F.BLL.csproj", "{4FE610E4-BA3E-40F6-A372-42DD08487FD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "F2F.BLL", "F2F.BLL\F2F.BLL.csproj", "{4FE610E4-BA3E-40F6-A372-42DD08487FD1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "F2F.API", "F2F.API\F2F.API.csproj", "{073B4141-2511-41F1-88D4-0058BE9A5C43}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4FE610E4-BA3E-40F6-A372-42DD08487FD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FE610E4-BA3E-40F6-A372-42DD08487FD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FE610E4-BA3E-40F6-A372-42DD08487FD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{073B4141-2511-41F1-88D4-0058BE9A5C43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{073B4141-2511-41F1-88D4-0058BE9A5C43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{073B4141-2511-41F1-88D4-0058BE9A5C43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{073B4141-2511-41F1-88D4-0058BE9A5C43}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

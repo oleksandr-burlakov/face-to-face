@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace F2F.Domain.Entities;
+namespace F2F.DLL.Entities;
 
 public class OneWayConfiguration : IEntityTypeConfiguration<OneWay>
 {

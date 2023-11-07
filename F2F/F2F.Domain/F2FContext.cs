@@ -1,5 +1,5 @@
 ﻿using F2F.DLL.Entities.Base;
-using F2F.Domain.Entities;
+using F2F.DLL.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;

@@ -1,8 +1,8 @@
-﻿using F2F.Domain.Entities;
+﻿using F2F.DLL.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace F2F.Domain.Configuration;
+namespace F2F.DLL.Configuration;
 
 public class TestConfiguration : IEntityTypeConfiguration<Test>
 {

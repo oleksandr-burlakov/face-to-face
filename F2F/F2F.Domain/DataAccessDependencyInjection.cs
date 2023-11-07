@@ -1,4 +1,4 @@
-﻿using F2F.Domain.Entities;
+﻿using F2F.DLL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -26,13 +26,13 @@ public static class DataAccessDependencyInjection
 
     private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
     {
-        var databaseConfig = configuration.GetSection("Database") as ConfigurationOptions;
-        if (databaseConfig is null)
+        var connectionString = configuration.GetSection("Database")["ConnectionString"];
+        if (connectionString is null)
             return;
         services.AddDbContext<F2FContext>(
             options =>
                 options.UseSqlServer(
-                    databaseConfig.ConnectionString,
+                    connectionString,
                     opt => opt.MigrationsAssembly(typeof(F2FContext).Assembly.FullName)
                 )
         );

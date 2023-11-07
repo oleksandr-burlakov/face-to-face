@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace F2F.Domain.Enums;
+namespace F2F.DLL.Enums;
 
 public enum SuspendedBehaviourTypeEnum
 {

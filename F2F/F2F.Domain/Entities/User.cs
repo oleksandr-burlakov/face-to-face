@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System.Text.Json.Serialization;
 
-namespace F2F.Domain.Entities;
+namespace F2F.DLL.Entities;
 
 public class User : IdentityUser<Guid>
 {
