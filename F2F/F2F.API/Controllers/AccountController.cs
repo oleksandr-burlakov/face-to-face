@@ -7,13 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace F2F.API.Controllers
 {
-    public class UsersController : ApiController
+    public class AccountController : ApiController
     {
         private readonly IUserService _userService;
+        private readonly IClaimService _claimService;
 
-        public UsersController(IUserService userService)
+        public AccountController(IUserService userService, IClaimService claimService)
         {
             _userService = userService;
+            _claimService = claimService;
         }
 
         [HttpPost]
@@ -33,6 +35,18 @@ namespace F2F.API.Controllers
         {
             return Ok(
                 ApiResult<LoginResponseModel>.Success(await _userService.LoginAsync(loginUserModel))
+            );
+        }
+
+        [Authorize]
+        [HttpGet("get-info")]
+        public async Task<IActionResult> GetInfo()
+        {
+            var id = _claimService.GetUserId();
+            return Ok(
+                ApiResult<GetInfoResponseModel>.Success(
+                    await _userService.GetInfo(new GetInfoModel() { UserId = id })
+                )
             );
         }
     }

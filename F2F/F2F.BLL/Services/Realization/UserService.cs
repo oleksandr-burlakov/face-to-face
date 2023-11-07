@@ -63,4 +63,13 @@ public class UserService : IUserService
             Token = token
         };
     }
+
+    public async Task<GetInfoResponseModel> GetInfo(GetInfoModel getInfoModel)
+    {
+        var user = await _userManager.FindByIdAsync(getInfoModel.UserId.ToString());
+        var roles = await _userManager.GetRolesAsync(user);
+        var result = _mapper.Map<GetInfoResponseModel>(user);
+        result.Role = roles.FirstOrDefault();
+        return result;
+    }
 }

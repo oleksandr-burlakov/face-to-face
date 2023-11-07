@@ -7,4 +7,5 @@ public interface IUserService
     Task<CreateUserResponseModel> CreateAsync(CreateUserModel createUserModel);
 
     Task<LoginResponseModel> LoginAsync(LoginUserModel loginUserModel);
+    Task<GetInfoResponseModel> GetInfo(GetInfoModel getInfoModel);
 }
