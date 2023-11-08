@@ -3,7 +3,11 @@ import { alpha, styled } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
-export const StyledLabel = styled(Box)(({ theme, ownerState }) => {
+export type StyledLabelType = {
+    theme: any,
+    ownerState: any
+};
+export const StyledLabel = styled(Box)(({ theme, ownerState } : StyledLabelType) => {
   const lightMode = theme.palette.mode === 'light';
 
   const filledVariant = ownerState.variant === 'filled';

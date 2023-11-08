@@ -15,12 +15,14 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useRouter } from 'src/routes/hooks';
 
+import { useAuth } from 'src/hooks/use-auth';
+
 import { bgGradient } from 'src/theme/css';
+import { authenticate } from 'src/api/account-api';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
-import { authenticate } from 'src/api/account-api';
-import { useAuth } from 'src/hooks/use-auth';
+
 
 // ----------------------------------------------------------------------
 

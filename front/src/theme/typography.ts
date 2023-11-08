@@ -1,23 +1,23 @@
 // ----------------------------------------------------------------------
 
-export function remToPx(value) {
+export function remToPx(value: string) {
   return Math.round(parseFloat(value) * 16);
 }
 
-export function pxToRem(value) {
+export function pxToRem(value: number) {
   return `${value / 16}rem`;
 }
 
-export function responsiveFontSizes({ sm, md, lg }) {
+export function responsiveFontSizes(params: { sm: number, md: number, lg: number}) {
   return {
     '@media (min-width:600px)': {
-      fontSize: pxToRem(sm),
+      fontSize: pxToRem(params.sm),
     },
     '@media (min-width:900px)': {
-      fontSize: pxToRem(md),
+      fontSize: pxToRem(params.md),
     },
     '@media (min-width:1200px)': {
-      fontSize: pxToRem(lg),
+      fontSize: pxToRem(params.lg),
     },
   };
 }

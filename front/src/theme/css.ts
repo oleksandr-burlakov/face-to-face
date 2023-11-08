@@ -6,32 +6,32 @@ import { autocompleteClasses } from '@mui/material/Autocomplete';
 
 // ----------------------------------------------------------------------
 
-export const paper = ({ theme, bgcolor, dropdown }) => ({
+export const paper = (props: { theme: any, bgcolor: string, dropdown: any }) => ({
   ...bgBlur({
     blur: 20,
     opacity: 0.9,
-    color: theme.palette.background.paper,
-    ...(!!bgcolor && {
-      color: bgcolor,
+    color: props.theme.palette.background.paper,
+    ...(!!props.bgcolor && {
+      color: props.bgcolor,
     }),
   }),
   backgroundImage: 'url(/assets/cyan-blur.png), url(/assets/red-blur.png)',
   backgroundRepeat: 'no-repeat, no-repeat',
   backgroundPosition: 'top right, left bottom',
   backgroundSize: '50%, 50%',
-  ...(theme.direction === 'rtl' && {
+  ...(props.theme.direction === 'rtl' && {
     backgroundPosition: 'top left, right bottom',
   }),
-  ...(dropdown && {
-    padding: theme.spacing(0.5),
-    boxShadow: theme.customShadows.dropdown,
-    borderRadius: theme.shape.borderRadius * 1.25,
+  ...(props.dropdown && {
+    padding: props.theme.spacing(0.5),
+    boxShadow: props.theme.customShadows.dropdown,
+    borderRadius: props.theme.shape.borderRadius * 1.25,
   }),
 });
 
 // ----------------------------------------------------------------------
 
-export const menuItem = (theme) => ({
+export const menuItem = (theme: any) => ({
   ...theme.typography.body2,
   padding: theme.spacing(0.75, 1),
   borderRadius: theme.shape.borderRadius * 0.75,
@@ -63,7 +63,7 @@ export const menuItem = (theme) => ({
 
 // ----------------------------------------------------------------------
 
-export function bgBlur(props) {
+export function bgBlur(props: any) {
   const color = props?.color || '#000000';
   const blur = props?.blur || 6;
   const opacity = props?.opacity || 0.8;
@@ -97,7 +97,7 @@ export function bgBlur(props) {
 
 // ----------------------------------------------------------------------
 
-export function bgGradient(props) {
+export function bgGradient(props: any) {
   const direction = props?.direction || 'to bottom';
   const startColor = props?.startColor;
   const endColor = props?.endColor;
@@ -122,7 +122,7 @@ export function bgGradient(props) {
 
 // ----------------------------------------------------------------------
 
-export function textGradient(value) {
+export function textGradient(value: any) {
   return {
     background: `-webkit-linear-gradient(${value})`,
     WebkitBackgroundClip: 'text',

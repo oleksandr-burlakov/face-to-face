@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 
-import { useAuth } from 'src/hooks/use-auth';
-
 import api from './axios';
+import { useAuth } from '../hooks/use-auth';
 
-const AxiosErrorHandler = ({ children }) => {
-  const { setToken } = useAuth();
+const AxiosErrorHandler = (props: { children: any }) => {
+  const auth = useAuth();
 
   useEffect(() => {
     const responseInterceptor = api.interceptors.response.use(
@@ -28,7 +27,7 @@ const AxiosErrorHandler = ({ children }) => {
             // return axios(originalRequest);
             throw new Error('No refresh token yet');
           } catch (localError) {
-            setToken(null);
+            auth?.setToken(null);
           }
         }
 
@@ -39,9 +38,9 @@ const AxiosErrorHandler = ({ children }) => {
     return () => {
       api.interceptors.response.eject(responseInterceptor);
     };
-  }, [setToken]);
+  }, [auth]);
 
-  return children;
+  return props.children;
 };
 
 export default AxiosErrorHandler;

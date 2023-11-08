@@ -4,6 +4,7 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import { useAuth } from 'src/hooks/use-auth';
 
 import DashboardLayout from 'src/layouts/dashboard';
+import QuestionnairePage from 'src/pages/questionnaires';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
@@ -34,6 +35,7 @@ export default function Router() {
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
+        { path: 'questionnaires', element: <QuestionnairePage /> },
       ],
     },
     {

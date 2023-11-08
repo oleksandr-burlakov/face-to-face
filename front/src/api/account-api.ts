@@ -1,9 +1,11 @@
 import api from './axios';
+import { AuthenticateModelType } from '../models/account/authenticate-model';
 
-const authenticate = async (username, password) =>
+
+const authenticate = async (model: AuthenticateModelType) =>
   api.post(
     '/Account/authenticate',
-    { username, password },
+    model,
     {
       method: 'POST',
     }

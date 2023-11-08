@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import { memo, forwardRef } from 'react';
+import React, { memo, forwardRef } from 'react';
 
 import Box from '@mui/material/Box';
 
@@ -7,7 +6,7 @@ import { StyledScrollbar, StyledRootScrollbar } from './styles';
 
 // ----------------------------------------------------------------------
 
-const Scrollbar = forwardRef(({ children, sx, ...other }, ref) => {
+const Scrollbar = forwardRef(({ children, sx, ...other } : ScrollbarPropTypes, ref) => {
   const userAgent = typeof navigator === 'undefined' ? 'SSR' : navigator.userAgent;
 
   const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
@@ -36,9 +35,9 @@ const Scrollbar = forwardRef(({ children, sx, ...other }, ref) => {
   );
 });
 
-Scrollbar.propTypes = {
-  children: PropTypes.node,
-  sx: PropTypes.object,
+export type ScrollbarPropTypes = {
+  children: any,
+  sx: any,
 };
 
 export default memo(Scrollbar);

@@ -1,7 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import axios from 'axios';
 
-import { API_CONSTANTS } from 'src/utils/globals/api-constants';
+import { API_CONSTANTS } from '../utils/globals/api-constants';
 
 const api = axios.create({ baseURL: API_CONSTANTS.url });
 

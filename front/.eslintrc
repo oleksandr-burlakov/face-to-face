@@ -2,18 +2,22 @@
   "root": true,
   "env": {
     "browser": true,
-    "es2021": true
+    "es2021": true,
   },
   "plugins": [
     "perfectionist",
     "unused-imports",
-    "prettier"
+    "prettier",
+    "@typescript-eslint"
   ],
   "extends": [
     "airbnb",
     "airbnb/hooks",
-    "prettier"
+    "prettier",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module",
@@ -25,6 +29,12 @@
     "react": {
       "version": "detect"
     },
+    "import/extensions": [
+      ".js",
+      ".jsx",
+      ".ts",
+      ".tsx",
+    ],
     "import/resolver": {
       "alias": {
         "map": [
@@ -36,10 +46,21 @@
         "extensions": [
           ".js",
           ".jsx",
-          ".json"
+          ".json",
+          ".ts",
+          ".tsx"
         ]
+      },
+      "typescript": {
+        "directory": "./tsconfig.json"
+      },
+      "node": {
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
       }
-    }
+  },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    },
   },
   "rules": {
     "no-alert": 0,
@@ -171,6 +192,17 @@
           "src/**"
         ]
       }
+    ],
+    "@typescript-eslint/no-explicit-any": "off" ,
+    "import/extensions": [
+        "error",
+        "ignorePackages",
+        {
+          "js": "never",
+          "jsx": "never",
+          "ts": "never",
+          "tsx": "never"
+        }
     ]
   }
 }
