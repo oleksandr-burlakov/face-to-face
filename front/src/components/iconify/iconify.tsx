@@ -18,8 +18,8 @@ const Iconify = forwardRef(({ icon, width = 20, sx, ...other } : IconifyPropType
 
 export type IconifyPropTypes = {
   icon:any,
-  sx: any,
-  width: number,
+  sx?: any,
+  width?: number,
 };
 
 export default Iconify;

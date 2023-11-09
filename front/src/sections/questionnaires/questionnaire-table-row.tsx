@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 
 import Stack from '@mui/material/Stack';
 import Popover from '@mui/material/Popover';
@@ -10,6 +9,8 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { GetMyQuestionnaireModelType } from 'src/models/questionnaire';
+
 import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
@@ -18,11 +19,13 @@ export default function QuestionnaireTableRow({
   selected,
   questionnaire,
   handleClick,
-  handleEditClick
-}) {
+  handleEditClick,
+  handleDeleteClick,
+  handleTableRowClick
+}: QuestionnaireTableRowPropTypes) {
   const [open, setOpen] = useState(null);
 
-  const handleOpenMenu = (event) => {
+  const handleOpenMenu = (event: any) => {
     setOpen(event.currentTarget);
   };
 
@@ -37,7 +40,7 @@ export default function QuestionnaireTableRow({
           <Checkbox disableRipple checked={selected} onChange={handleClick} />
         </TableCell>
 
-        <TableCell component="th" scope="row" padding="none">
+        <TableCell sx={{":hover": {cursor: 'pointer'}}} onClick={() => handleTableRowClick(questionnaire)} component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
             <Typography variant="subtitle2" noWrap>
               {questionnaire.title}
@@ -67,7 +70,7 @@ export default function QuestionnaireTableRow({
           Edit
         </MenuItem>
 
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={() => {handleCloseMenu(); handleDeleteClick(questionnaire);}} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Delete
         </MenuItem>
@@ -76,9 +79,11 @@ export default function QuestionnaireTableRow({
   );
 }
 
-QuestionnaireTableRow.propTypes = {
-  handleClick: PropTypes.func,
-  questionnaire: PropTypes.any,
-  selected: PropTypes.any,
-  handleEditClick: PropTypes.func
+export type QuestionnaireTableRowPropTypes = {
+  handleClick:any 
+  questionnaire: GetMyQuestionnaireModelType,
+  selected: any,
+  handleEditClick: any,
+  handleDeleteClick: (questionnaire: GetMyQuestionnaireModelType) => void,
+  handleTableRowClick: (questionnaire: GetMyQuestionnaireModelType) => void
 };

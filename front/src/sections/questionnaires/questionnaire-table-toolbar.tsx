@@ -1,4 +1,5 @@
-import PropTypes from 'prop-types';
+
+import React from 'react';
 
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,7 +12,7 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-export default function QuestionnaireTableToolbar({ numSelected, filterName, onFilterName }) {
+export default function QuestionnaireTableToolbar({ numSelected, filterName, onFilterName } : QuestionnaireTableToolbarPropTypes) {
   return (
     <Toolbar
       sx={{
@@ -62,8 +63,8 @@ export default function QuestionnaireTableToolbar({ numSelected, filterName, onF
   );
 }
 
-QuestionnaireTableToolbar.propTypes = {
-  numSelected: PropTypes.number,
-  filterName: PropTypes.string,
-  onFilterName: PropTypes.func,
+export type QuestionnaireTableToolbarPropTypes = {
+  numSelected: number,
+  filterName: string,
+  onFilterName: any 
 };

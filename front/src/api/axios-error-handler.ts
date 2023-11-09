@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 
+import { timeErrorAlert } from 'src/utils/helpers/alert-helper';
+
 import api from './axios';
 import { useAuth } from '../hooks/use-auth';
 
@@ -30,6 +32,8 @@ const AxiosErrorHandler = (props: { children: any }) => {
             auth?.setToken(null);
           }
         }
+
+        timeErrorAlert(error.response.data.Errors[0]);
 
         return Promise.reject(error);
       }

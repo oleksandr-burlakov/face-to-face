@@ -87,7 +87,7 @@ const Logo = forwardRef(({ disabledLink = false, sx, ...other }: LogoPropTypes, 
 });
 
 export type LogoPropTypes = {
-  disabledLink: boolean,
+  disabledLink?: boolean,
   sx: any,
 };
 

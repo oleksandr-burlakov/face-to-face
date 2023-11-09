@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -13,25 +13,22 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { useRouter } from 'src/routes/hooks';
+import { getInfo, authenticate } from 'src/api/account-api';
 
-import { useAuth } from 'src/hooks/use-auth';
-
-import { bgGradient } from 'src/theme/css';
-import { authenticate } from 'src/api/account-api';
-
-import Logo from 'src/components/logo';
-import Iconify from 'src/components/iconify';
-
+import Logo from '../../components/logo';
+import { bgGradient } from '../../theme/css';
+import { useAuth } from '../../hooks/use-auth';
+import Iconify from '../../components/iconify';
+import { useRouter } from '../../routes/hooks';
 
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
-  const {setToken } = useAuth();
+  const authContext = useAuth();
 
   const [formData, setFormData] = useState({username: "",password: ""});
 
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     const { name, value } = event.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
@@ -43,9 +40,13 @@ export default function LoginView() {
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = async () => {
-    const result = await authenticate(formData.username, formData.password);
+    const result = await authenticate({username: formData.username, password: formData.password});
     if (result.data.succeeded) {
-      setToken(result.data.result.token);
+      authContext?.setToken(result.data.result.token);
+      const accountDataResponse = await getInfo();
+      if (accountDataResponse.data.succeeded) {
+        authContext?.setAccountInfo(accountDataResponse.data.result);
+      }
       router.push('/');
     }
   };
@@ -64,7 +65,7 @@ export default function LoginView() {
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} sx={undefined} width={0} />
                 </IconButton>
               </InputAdornment>
             ),
@@ -107,8 +108,7 @@ export default function LoginView() {
           position: 'fixed',
           top: { xs: 16, md: 24 },
           left: { xs: 16, md: 24 },
-        }}
-      />
+        }} disabledLink={false}      />
 
       <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
         <Card
@@ -135,7 +135,7 @@ export default function LoginView() {
               variant="outlined"
               sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
             >
-              <Iconify icon="eva:google-fill" color="#DF3E30" />
+              <Iconify icon="eva:google-fill" width={0} />
             </Button>
 
             <Button
@@ -145,7 +145,7 @@ export default function LoginView() {
               variant="outlined"
               sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
             >
-              <Iconify icon="eva:facebook-fill" color="#1877F2" />
+              <Iconify icon="eva:facebook-fill"  width={0}  />
             </Button>
 
             <Button
@@ -155,7 +155,7 @@ export default function LoginView() {
               variant="outlined"
               sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
             >
-              <Iconify icon="eva:twitter-fill" color="#1C9CEA" />
+              <Iconify icon="eva:twitter-fill"  width={0} />
             </Button>
           </Stack>
 

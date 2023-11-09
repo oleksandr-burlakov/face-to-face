@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, SetStateAction } from 'react';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -10,8 +11,10 @@ import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { getInfo } from 'src/api/account-api';
-import { questionnaires } from 'src/_mock/questionnaires';
+import { timeErrorAlert } from 'src/utils/helpers/alert-helper';
+
+import { GetMyQuestionnaireModelType } from 'src/models/questionnaire/'
+import { deleteQuestionnaire, getMyQuestionnaires } from 'src/api/questionnaire-api';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -28,11 +31,12 @@ import QuestionnaireTableToolbar from '../questionnaire-table-toolbar';
 // ----------------------------------------------------------------------
 
 export default function QuestionnaireView() {
+  const [questionnaires, setQuestionnaires] = useState<GetMyQuestionnaireModelType[]>([]);
   const [page, setPage] = useState(0);
 
-  const [order, setOrder] = useState('asc');
+  const [order, setOrder] = useState<'asc'|'desc'>('asc');
 
-  const [selected, setSelected] = useState([]);
+  const [selected, setSelected] = useState<string[]>([]);
 
   const [orderBy, setOrderBy] = useState('name');
 
@@ -42,9 +46,11 @@ export default function QuestionnaireView() {
 
   const [openFormModal, setOpenFormModal] = useState(false);
 
-  const [activeQuestionnaire, setActiveQuestionnaire] = useState();
+  const [activeQuestionnaire, setActiveQuestionnaire] = useState<GetMyQuestionnaireModelType | null>();
 
-  const handleSort = (event, id) => {
+  const navigate = useNavigate();
+
+  const handleSort = (event: any, id: string) => {
     const isAsc = orderBy === id && order === 'asc';
     if (id !== '') {
       setOrder(isAsc ? 'desc' : 'asc');
@@ -52,18 +58,18 @@ export default function QuestionnaireView() {
     }
   };
 
-  const handleSelectAllClick = (event) => {
+  const handleSelectAllClick = (event: any) => {
     if (event.target.checked) {
-      const newSelecteds = questionnaires.map((n) => n.name);
+      const newSelecteds = questionnaires.map((n) => n.title);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
+  const handleClick = (event: any, name: string) => {
     const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
+    let newSelected: string[] = [];
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name);
     } else if (selectedIndex === 0) {
@@ -79,28 +85,23 @@ export default function QuestionnaireView() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (event: any, newPage: SetStateAction<number>) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (event: any) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const handleFilterByName = (event) => {
+  const handleFilterByName = (event: any) => {
     setPage(0);
     setFilterName(event.target.value);
   };
 
   useEffect(() => {
-    async function fetchData() {
-      let response = await getInfo();
-      response = await response.json();
-      console.log(response);
-    }
-    fetchData();
-  }, []);
+    loadQuestionnaires();
+  }, [setQuestionnaires]);
 
   const dataFiltered = applyFilter({
     inputData: questionnaires,
@@ -108,18 +109,42 @@ export default function QuestionnaireView() {
     filterName,
   });
 
-  const closeModal = () => {
+  const loadQuestionnaires = async () =>  {
+    await getMyQuestionnaires()
+      .catch((reason) => {
+        timeErrorAlert(reason.response.data.Errors[0]);
+      })
+      .then((request) => {
+        if (request) {
+          if (request.data.succeeded) {
+            setQuestionnaires(request.data.result);
+          }
+        }
+      });
+  }
+
+  const closeModal = async () => {
     setOpenFormModal(false);
     setActiveQuestionnaire(null);
+    await loadQuestionnaires();
   };
 
-  const openModal = (questionnaire) => {
+  const openModal = (questionnaire?: GetMyQuestionnaireModelType) => {
     setActiveQuestionnaire(questionnaire);
     setOpenFormModal(true);
   };
 
-  const handleEditClick = (questionnaire) => {
+  const handleEditClick = (questionnaire?: GetMyQuestionnaireModelType) => {
     openModal(questionnaire);
+  };
+
+  const handleDeleteClick = async (questionnaire: GetMyQuestionnaireModelType) => {
+    await deleteQuestionnaire(questionnaire.id);
+    setQuestionnaires(questionnaires.filter(q => q.id !== questionnaire.id));
+  };
+
+  const openQuestionnaireDetails = (questionnaire: GetMyQuestionnaireModelType) => {
+    navigate(`${questionnaire.id}`);
   };
 
   const notFound = !dataFiltered.length && !!filterName;
@@ -160,13 +185,15 @@ export default function QuestionnaireView() {
               <TableBody>
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
+                  .map((row: GetMyQuestionnaireModelType) => (
                     <QuestionnaireTableRow
                       key={row.id}
+                      handleTableRowClick={openQuestionnaireDetails}
                       questionnaire={row}
                       selected={selected.indexOf(row.title) !== -1}
                       handleEditClick={handleEditClick}
-                      handleClick={(event) => handleClick(event, row.title)}
+                      handleDeleteClick={handleDeleteClick}
+                      handleClick={(event: any) => handleClick(event, row.title)}
                     />
                   ))}
 

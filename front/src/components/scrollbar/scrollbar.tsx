@@ -36,8 +36,8 @@ const Scrollbar = forwardRef(({ children, sx, ...other } : ScrollbarPropTypes, r
 });
 
 export type ScrollbarPropTypes = {
-  children: any,
-  sx: any,
+  children?: any,
+  sx?: any,
 };
 
 export default memo(Scrollbar);

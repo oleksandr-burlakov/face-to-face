@@ -1,9 +1,12 @@
-import { useEffect } from "react";
-import PropTypes  from "prop-types";
+import React, { useEffect } from "react";
 import {useForm, Controller} from 'react-hook-form';
 
 import LoadingButton from '@mui/lab/LoadingButton';
 import { Box, Modal, Stack, Button, TextField, Typography } from "@mui/material";
+
+import { addQuestionnaire, updateQuestionnaire } from "src/api/questionnaire-api";
+import { UpdateQuestionnaireModel } from "src/models/questionnaire/update-questionnaire-model";
+import { AddQuestionnareModelType, GetMyQuestionnaireModelType } from "src/models/questionnaire";
 
 const style = {
   position: 'absolute',
@@ -18,7 +21,7 @@ const style = {
 };
 
 
-export default function QuestionnaireFormModal({open, handleClose, questionnaire}) {
+export default function QuestionnaireFormModal({open, handleClose, questionnaire}: QuestionnaireFormModalPropTypes) {
     const isEdit = questionnaire !== null && questionnaire !== undefined;
 
     const { control, handleSubmit, formState: {isValid}, reset } = useForm({
@@ -29,7 +32,22 @@ export default function QuestionnaireFormModal({open, handleClose, questionnaire
       reset({title: questionnaire?.title ?? ''});
     }, [reset, questionnaire]);
 
-    const onSubmit = data => console.log(data);
+    const onSubmit = async (data: any) => {
+      if (isEdit) {
+        const requestData = data as UpdateQuestionnaireModel;
+        requestData.id = questionnaire.id;
+        const result = await updateQuestionnaire(requestData);
+        if (result.data.succeeded) {
+          handleClose();
+        }
+      } else {
+        const requestData = data as AddQuestionnareModelType;
+        const result = await addQuestionnaire(requestData);
+        if (result.data.succeeded) {
+          handleClose();
+        }
+      }
+    };
 
     return (
     <Modal
@@ -48,7 +66,7 @@ export default function QuestionnaireFormModal({open, handleClose, questionnaire
               <Stack spacing={3}>
                 <Controller name="title"
                   rules={
-                    {required: 'error message', minLength: 5}
+                    {required: 'This field is required'}
                   }
                   control={control}
                   render={({
@@ -70,7 +88,7 @@ export default function QuestionnaireFormModal({open, handleClose, questionnaire
                   color="inherit"
                   disabled={!isValid}
                 >
-                  Add 
+                  { isEdit ? "Save" : "Add" }
                 </LoadingButton>
               </Stack>
             </form>
@@ -79,8 +97,8 @@ export default function QuestionnaireFormModal({open, handleClose, questionnaire
       </Modal>);
 }
 
-QuestionnaireFormModal.propTypes = {
-  open: PropTypes.any,
-  handleClose: PropTypes.func,
-  questionnaire: PropTypes.any
+export type QuestionnaireFormModalPropTypes = {
+  open: any,
+  handleClose: any,
+  questionnaire: GetMyQuestionnaireModelType | null | undefined
 };

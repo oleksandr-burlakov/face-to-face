@@ -35,7 +35,19 @@ export default function Router() {
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
-        { path: 'questionnaires', element: <QuestionnairePage /> },
+        { 
+          path: 'questionnaires',
+          children: [
+            {
+              path: '',
+              element: <QuestionnairePage />
+            },
+            {
+              path: ':id',
+              element: <BlogPage/>
+            }
+          ] 
+        },
       ],
     },
     {

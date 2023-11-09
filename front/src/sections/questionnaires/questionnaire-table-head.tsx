@@ -1,4 +1,5 @@
-import PropTypes from 'prop-types';
+
+import React from 'react';
 
 import Box from '@mui/material/Box';
 import TableRow from '@mui/material/TableRow';
@@ -19,8 +20,8 @@ export default function QuestionnaireTableHead({
   numSelected,
   onRequestSort,
   onSelectAllClick,
-}) {
-  const onSort = (property) => (event) => {
+}: QuestionnaireTableHeadPropTypes) {
+  const onSort = (property: any) => (event: any) => {
     onRequestSort(event, property);
   };
 
@@ -62,12 +63,12 @@ export default function QuestionnaireTableHead({
   );
 }
 
-QuestionnaireTableHead.propTypes = {
-  order: PropTypes.oneOf(['asc', 'desc']),
-  orderBy: PropTypes.string,
-  rowCount: PropTypes.number,
-  headLabel: PropTypes.array,
-  numSelected: PropTypes.number,
-  onRequestSort: PropTypes.func,
-  onSelectAllClick: PropTypes.func,
+export type QuestionnaireTableHeadPropTypes = {
+  order: 'asc'| 'desc',
+  orderBy: string,
+  rowCount: number,
+  headLabel: any[],
+  numSelected: number,
+  onRequestSort:any,
+  onSelectAllClick: any,
 };

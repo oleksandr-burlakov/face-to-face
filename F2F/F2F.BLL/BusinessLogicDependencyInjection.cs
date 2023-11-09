@@ -20,6 +20,7 @@ public static class BusinessLogicDependencyInjection
     {
         services.AddScoped<IClaimService, ClaimService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IQuestionnaireService, QuestionnaireService>();
     }
 
     private static void RegisterAutoMapper(this IServiceCollection services)

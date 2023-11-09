@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect } from 'react';
 
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import Avatar from '@mui/material/Avatar';
 import { alpha } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
@@ -13,9 +11,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import { usePathname } from 'src/routes/hooks';
 import { RouterLink } from 'src/routes/components';
 
+import { useAuth } from 'src/hooks/use-auth';
 import { useResponsive } from 'src/hooks/use-responsive';
-
-import { account } from 'src/_mock/account';
 
 import Logo from 'src/components/logo';
 import Scrollbar from 'src/components/scrollbar';
@@ -25,7 +22,8 @@ import navConfig from './config-navigation';
 
 // ----------------------------------------------------------------------
 
-export default function Nav({ openNav, onCloseNav }) {
+export default function Nav({ openNav, onCloseNav }: NavPropTypes) {
+  const authContext = useAuth();
   const pathname = usePathname();
 
   const upLg = useResponsive('up', 'lg');
@@ -50,13 +48,13 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      <Avatar src={authContext?.accountInfo?.username} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{`${authContext?.accountInfo?.firstName  } ${  authContext?.accountInfo?.lastName}`}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
+          {authContext?.accountInfo?.role}
         </Typography>
       </Box>
     </Box>
@@ -79,22 +77,6 @@ export default function Nav({ openNav, onCloseNav }) {
           sx={{ width: 100, position: 'absolute', top: -50 }}
         />
 
-        <Box sx={{ textAlign: 'center' }}>
-          <Typography variant="h6">Get more?</Typography>
-
-          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
-            From only $69
-          </Typography>
-        </Box>
-
-        <Button
-          href="https://material-ui.com/store/items/minimal-dashboard/"
-          target="_blank"
-          variant="contained"
-          color="inherit"
-        >
-          Upgrade to Pro
-        </Button>
       </Stack>
     </Box>
   );
@@ -157,14 +139,14 @@ export default function Nav({ openNav, onCloseNav }) {
   );
 }
 
-Nav.propTypes = {
-  openNav: PropTypes.bool,
-  onCloseNav: PropTypes.func,
+export type NavPropTypes = {
+  openNav: boolean,
+  onCloseNav: any,
 };
 
 // ----------------------------------------------------------------------
 
-function NavItem({ item }) {
+function NavItem({ item } : NavItemPropTypes) {
   const pathname = usePathname();
 
   const active = item.path === pathname;
@@ -199,6 +181,6 @@ function NavItem({ item }) {
   );
 }
 
-NavItem.propTypes = {
-  item: PropTypes.object,
+export type NavItemPropTypes = {
+  item: any,
 };

@@ -1,8 +1,10 @@
+import React from 'react';
+
 import SvgColor from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
 
-const icon = (name) => (
+const icon = (name: string) => (
   <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
 );
 

@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import React from 'react';
 
 import Paper from '@mui/material/Paper';
 import TableRow from '@mui/material/TableRow';
@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 
 // ----------------------------------------------------------------------
 
-export default function TableNoData({ query }) {
+export default function TableNoData({ query }: TableNoDataPropTypes) {
   return (
     <TableRow>
       <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -31,6 +31,6 @@ export default function TableNoData({ query }) {
   );
 }
 
-TableNoData.propTypes = {
-  query: PropTypes.string,
+export type TableNoDataPropTypes = {
+  query: string,
 };
