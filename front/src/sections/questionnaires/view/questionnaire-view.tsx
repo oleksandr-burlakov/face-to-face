@@ -1,3 +1,4 @@
+import {useRecoilState} from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect, SetStateAction } from 'react';
 
@@ -13,6 +14,7 @@ import TablePagination from '@mui/material/TablePagination';
 
 import { timeErrorAlert } from 'src/utils/helpers/alert-helper';
 
+import {activeQuestionnaireAtom} from 'src/state/';
 import { GetMyQuestionnaireModelType } from 'src/models/questionnaire/'
 import { deleteQuestionnaire, getMyQuestionnaires } from 'src/api/questionnaire-api';
 
@@ -27,10 +29,10 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 import QuestionnaireFormModal from './modal/questionnaire-form-modal';
 import QuestionnaireTableToolbar from '../questionnaire-table-toolbar';
 
-
 // ----------------------------------------------------------------------
 
 export default function QuestionnaireView() {
+  const [, setStateQuesitonnaire]= useRecoilState(activeQuestionnaireAtom)
   const [questionnaires, setQuestionnaires] = useState<GetMyQuestionnaireModelType[]>([]);
   const [page, setPage] = useState(0);
 
@@ -144,6 +146,7 @@ export default function QuestionnaireView() {
   };
 
   const openQuestionnaireDetails = (questionnaire: GetMyQuestionnaireModelType) => {
+    setStateQuesitonnaire(questionnaire);
     navigate(`${questionnaire.id}`);
   };
 

@@ -41,11 +41,12 @@ export default function LoginView() {
 
   const handleClick = async () => {
     const result = await authenticate({username: formData.username, password: formData.password});
-    if (result.data.succeeded) {
-      authContext?.setToken(result.data.result.token);
+    if (result.data.succeeded && authContext) {
+      localStorage.setItem('token', result.data.result.token);
+      authContext.setToken(result.data.result.token);
       const accountDataResponse = await getInfo();
       if (accountDataResponse.data.succeeded) {
-        authContext?.setAccountInfo(accountDataResponse.data.result);
+        authContext.setAccountInfo(accountDataResponse.data.result);
       }
       router.push('/');
     }

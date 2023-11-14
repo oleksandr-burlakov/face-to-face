@@ -12,6 +12,7 @@ export const UserPage = lazy(() => import('src/pages/user'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
+export const QuestionsPage = lazy(() => import('src/pages/questions'))
 
 // ----------------------------------------------------------------------
 
@@ -44,7 +45,7 @@ export default function Router() {
             },
             {
               path: ':id',
-              element: <BlogPage/>
+              element: <QuestionsPage/>
             }
           ] 
         },

@@ -9,22 +9,20 @@ public static class BusinessLogicDependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddServices();
-
-        services.RegisterAutoMapper();
-
-        return services;
+        return services.AddServices().RegisterAutoMapper();
     }
 
-    private static void AddServices(this IServiceCollection services)
+    private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IClaimService, ClaimService>();
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IQuestionnaireService, QuestionnaireService>();
+        services.AddScoped<IQuestionService, QuestionService>();
+        return services;
     }
 
-    private static void RegisterAutoMapper(this IServiceCollection services)
+    private static IServiceCollection RegisterAutoMapper(this IServiceCollection services)
     {
-        services.AddAutoMapper(typeof(IMappingProfilesMarker));
+        return services.AddAutoMapper(typeof(IMappingProfilesMarker));
     }
 }
