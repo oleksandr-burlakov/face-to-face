@@ -1,0 +1,1 @@
+export { MeetingView } from './view/meeting-view';

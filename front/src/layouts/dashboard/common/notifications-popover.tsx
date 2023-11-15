@@ -1,6 +1,5 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { set, sub } from 'date-fns';
+import React, { useState } from 'react';
 import { faker } from '@faker-js/faker';
 
 import Box from '@mui/material/Box';
@@ -80,7 +79,7 @@ export default function NotificationsPopover() {
 
   const [open, setOpen] = useState(null);
 
-  const handleOpen = (event) => {
+  const handleOpen = (event: any) => {
     setOpen(event.currentTarget);
   };
 
@@ -180,19 +179,19 @@ export default function NotificationsPopover() {
 
 // ----------------------------------------------------------------------
 
-NotificationItem.propTypes = {
-  notification: PropTypes.shape({
-    createdAt: PropTypes.instanceOf(Date),
-    id: PropTypes.string,
-    isUnRead: PropTypes.bool,
-    title: PropTypes.string,
-    description: PropTypes.string,
-    type: PropTypes.string,
-    avatar: PropTypes.any,
-  }),
+export type NotificationItemPropTypes = {
+  notification: {
+    createdAt: Date,
+    id: string,
+    isUnRead: boolean,
+    title: string,
+    description: string,
+    type: string,
+    avatar: any,
+  },
 };
 
-function NotificationItem({ notification }) {
+function NotificationItem({ notification }: NotificationItemPropTypes) {
   const { avatar, title } = renderContent(notification);
 
   return (
@@ -232,7 +231,7 @@ function NotificationItem({ notification }) {
 
 // ----------------------------------------------------------------------
 
-function renderContent(notification) {
+function renderContent(notification: any) {
   const title = (
     <Typography variant="subtitle2">
       {notification.title}

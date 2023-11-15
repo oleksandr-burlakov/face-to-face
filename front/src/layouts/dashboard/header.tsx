@@ -1,11 +1,13 @@
-import PropTypes from 'prop-types';
+import React from 'react';
 
 import Box from '@mui/material/Box';
+import { Button } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
+import { VideoCameraBack } from '@mui/icons-material';
 
 import { useResponsive } from 'src/hooks/use-responsive';
 
@@ -20,7 +22,11 @@ import NotificationsPopover from './common/notifications-popover';
 
 // ----------------------------------------------------------------------
 
-export default function Header({ onOpenNav }) {
+export type HeaderPropTypes = {
+  onOpenNav: any,
+};
+
+export default function Header({ onOpenNav } : HeaderPropTypes) {
   const theme = useTheme();
 
   const lgUp = useResponsive('up', 'lg');
@@ -37,6 +43,14 @@ export default function Header({ onOpenNav }) {
       <Box sx={{ flexGrow: 1 }} />
 
       <Stack direction="row" alignItems="center" spacing={1}>
+        <Button color="secondary" variant='outlined' sx={{padding:'12px'}}>
+          <Stack flexDirection='row' columnGap={2}>
+            <VideoCameraBack/>
+            <span>
+              New Meeting 
+            </span>
+          </Stack>
+        </Button>
         <LanguagePopover />
         <NotificationsPopover />
         <AccountPopover />
@@ -74,6 +88,4 @@ export default function Header({ onOpenNav }) {
   );
 }
 
-Header.propTypes = {
-  onOpenNav: PropTypes.func,
-};
+

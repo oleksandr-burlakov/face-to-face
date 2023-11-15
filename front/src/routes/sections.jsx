@@ -3,6 +3,7 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import { useAuth } from 'src/hooks/use-auth';
 
+import MeetingsPage from 'src/pages/meetings';
 import DashboardLayout from 'src/layouts/dashboard';
 import QuestionnairePage from 'src/pages/questionnaires';
 
@@ -49,6 +50,15 @@ export default function Router() {
             }
           ] 
         },
+        {
+          path: 'meetings',
+          children: [
+            {
+              path: '',
+              element: <MeetingsPage/>
+            }
+          ]
+        }
       ],
     },
     {

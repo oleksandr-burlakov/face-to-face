@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Quiz, GroupsOutlined } from '@mui/icons-material';
+
 import SvgColor from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -9,6 +11,16 @@ const icon = (name: string) => (
 );
 
 const navConfig = [
+  {
+    title: 'questionnaires',
+    path: '/questionnaires',
+    icon: <Quiz/>,
+  },
+  {
+    title: 'meetings',
+    path: '/meetings',
+    icon: <GroupsOutlined/>,
+  },
   {
     title: 'dashboard',
     path: '/',
@@ -27,11 +39,6 @@ const navConfig = [
   {
     title: 'blog',
     path: '/blog',
-    icon: icon('ic_blog'),
-  },
-  {
-    title: 'questionnaires',
-    path: '/questionnaires',
     icon: icon('ic_blog'),
   },
   {
