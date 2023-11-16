@@ -6,6 +6,7 @@ using F2F.DLL;
 using F2F.BLL;
 using F2F.BLL.Models.Validators;
 using F2F.API.Filters;
+using F2F.API.SignalRWebpack.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddValidatorsFromAssemblyContaining(typeof(IValidationMarker));
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSignalR();
 
 builder.Services.AddJwt(builder.Configuration);
 
@@ -40,7 +42,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors(
-    corsPolicyBuilder => corsPolicyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()
+    corsPolicyBuilder =>
+        corsPolicyBuilder
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .SetIsOriginAllowed(origin => true)
 );
 
 app.UseRouting();
@@ -56,5 +63,6 @@ app.UseMiddleware<TransactionMiddleware>();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
+app.MapHub<RoomHub>("/hub");
 
 app.Run();
