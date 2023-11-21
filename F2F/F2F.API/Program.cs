@@ -30,14 +30,11 @@ using var scope = app.Services.CreateScope();
 
 await MigrationManager.MigrateAsync(scope.ServiceProvider);
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "N-Tier V1");
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "N-Tier V1");
+});
 
 app.UseHttpsRedirection();
 

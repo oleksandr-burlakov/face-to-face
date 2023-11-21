@@ -18,6 +18,7 @@ public static class BusinessLogicDependencyInjection
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IQuestionnaireService, QuestionnaireService>();
         services.AddScoped<IQuestionService, QuestionService>();
+        services.AddScoped<IMeetingService, MeetingService>();
         return services;
     }
 

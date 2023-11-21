@@ -8,6 +8,15 @@ const successAlert = (text: string, title?: string) => {
       }); 
 }
 
+const timeSuccessAlert = (text: string, title?: string) => {
+    Swal.fire({  
+        title,  
+        text,
+        icon: 'success',
+        timer: 1000,
+        showConfirmButton: false
+      }); 
+}
 const timeErrorAlert = (text: string, title?: string) => {
     const configuration: SweetAlertOptions = {
         title,
@@ -28,4 +37,4 @@ const errorAlert = (text: string, title?: string) => {
     Swal.fire(configuration); 
 }
 
-export {errorAlert, successAlert, timeErrorAlert};
+export {errorAlert, successAlert, timeErrorAlert, timeSuccessAlert};

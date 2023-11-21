@@ -1,9 +1,9 @@
 export type AddMeetingModel = {
-  recordLink?: string;
+  title: string;
   participantsEmail: string;
   assignedTime?: Date;
-  asslowConnectWithoutHost: boolean;
+  allowedConnectWithoutHost: boolean;
   maxAllowedParticipantsNumber?: number;
   saveChat : boolean;
-  isFinished: boolean;
+  preferableQuestionnaireId?: string;
 };

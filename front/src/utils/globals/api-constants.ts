@@ -1,4 +1,9 @@
+const httpsPort = '7243';
+// eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+const httpPort = '5151';
+const base=  `https://localhost:${httpsPort}`;
 export const API_CONSTANTS = {
-  url: 'https://localhost:7242/api/',
-  hub:'https://localhost:7242/hub/'
+  url: `${base}/api/`,
+  hub:`${base}/hub/`,
+  clientBaseUrl : `localhost:3030`
 };

@@ -4,6 +4,7 @@ using F2F.DLL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace F2F.DLL.Migrations
 {
     [DbContext(typeof(F2FContext))]
-    partial class F2FContextModelSnapshot : ModelSnapshot
+    [Migration("20231121150407_MeetingTitle")]
+    partial class MeetingTitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,10 +136,8 @@ namespace F2F.DLL.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ParticipantsEmail")
+                        .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid?>("PreferableQuestionnaireId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("RecordLink")
                         .HasMaxLength(256)
@@ -152,8 +153,6 @@ namespace F2F.DLL.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OwnerId");
-
-                    b.HasIndex("PreferableQuestionnaireId");
 
                     b.ToTable("Meetings");
                 });
@@ -896,13 +895,7 @@ namespace F2F.DLL.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("F2F.DLL.Entities.Questionnaire", "PreferableQuestionnaire")
-                        .WithMany()
-                        .HasForeignKey("PreferableQuestionnaireId");
-
                     b.Navigation("Owner");
-
-                    b.Navigation("PreferableQuestionnaire");
                 });
 
             modelBuilder.Entity("F2F.DLL.Entities.MeetingMessage", b =>

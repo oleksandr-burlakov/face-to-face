@@ -1,11 +1,13 @@
 export type MeetingModel = {
   id: string;
+  title: string;
   recordLink?: string;
   participantsEmail: string;
   assignedTime?: Date;
   ownerId: string;
-  asslowConnectWithoutHost: boolean;
+  allowedConnectWithoutHost: boolean;
   maxAllowedParticipantsNumber?: number;
   saveChat : boolean;
   isFinished: boolean;
+  preferableQuestionnaireId?: string;
 };

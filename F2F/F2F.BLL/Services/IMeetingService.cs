@@ -5,7 +5,8 @@ namespace F2F.BLL.Services;
 
 public interface IMeetingService
 {
-    public Task<Guid> InsertAsync(Meeting meeting);
-    public Task UpdateAsync(Meeting meeting);
-    public Task<IEnumerable<MeetingModel>> GetMyMeetings(Guid userId);
+    public Task<Guid> InsertAsync(AddMeetingModel meeting);
+    public Task UpdateAsync(UpdateMeetingModel meeting);
+    public Task<IEnumerable<MeetingModel>> GetMyMeetings();
+    public Task EndMeeting(Guid meetingId);
 }
