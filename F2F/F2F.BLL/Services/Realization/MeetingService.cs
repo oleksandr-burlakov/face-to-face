@@ -53,6 +53,13 @@ public class MeetingService : IMeetingService
         }
     }
 
+    public async Task<MeetingModel> GetAsync(Guid id)
+    {
+        return _mapper.Map<MeetingModel>(
+            await _context.Meetings.FirstOrDefaultAsync(x => x.Id == id)
+        );
+    }
+
     public async Task EndMeeting(Guid meetingId)
     {
         var dataFromDb = await _context.Meetings.FirstOrDefaultAsync(x => x.Id == meetingId);

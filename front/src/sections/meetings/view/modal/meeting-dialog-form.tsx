@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 
 import { LoadingButton } from "@mui/lab";
-import { Box, Modal, Stack, Button, Checkbox, TextField, Typography, FormControlLabel, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Box, Modal, Stack, Button, Select, Checkbox, MenuItem, TextField, Typography, InputLabel, FormControl, FormControlLabel } from "@mui/material";
 
 import { addMeeting, updateMeeting } from "src/api/meeting-api";
-import { MeetingModel, AddMeetingModel, EditMeetingModel } from "src/models/meeting";
-import { GetMyQuestionnaireModelType } from "src/models/questionnaire";
 import { getMyQuestionnaires } from "src/api/questionnaire-api";
+import { GetMyQuestionnaireModelType } from "src/models/questionnaire";
+import { MeetingModel, AddMeetingModel, EditMeetingModel } from "src/models/meeting";
 
 const style = {
   position: 'absolute',
@@ -33,7 +33,7 @@ export default function MeetingDialogForm({open, closeModal, meeting} : {open: b
     reset();
 
     async function loadQuestionnairesList() {
-      let result = await getMyQuestionnaires();
+      const result = await getMyQuestionnaires();
       if (result.data.succeeded) {
         setQuestionnaires(result.data.result);
       }
@@ -166,7 +166,7 @@ export default function MeetingDialogForm({open, closeModal, meeting} : {open: b
                           <InputLabel id="preferable">Preferable quesitonnaire</InputLabel>
                           <Select value={value ?? ''} onChange={onChange} id="preferable" label="Preferable questionnaire">
                             <MenuItem>Without preferable</MenuItem>
-                            {quesitonnaires.map((q,i) => (<MenuItem value={q.id}>{q.title}</MenuItem>))}
+                            {quesitonnaires.map((q) => (<MenuItem value={q.id}>{q.title}</MenuItem>))}
                           </Select>
                         </FormControl>
                       }

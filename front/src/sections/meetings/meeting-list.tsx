@@ -1,15 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-import {ContentCopy, Edit as EditIcon, Login} from '@mui/icons-material';
-import { Table, Button, Tooltip, TableRow, TableBody, TableHead, TableCell, TableContainer, Typography } from "@mui/material";
+import {Login, ContentCopy, Edit as EditIcon} from '@mui/icons-material';
+import { Table, Button, Tooltip, TableRow, TableBody, TableHead, TableCell, Typography, TableContainer } from "@mui/material";
 
-import { timeSuccessAlert } from "src/utils/helpers/alert-helper";
 import { API_CONSTANTS } from "src/utils/globals/api-constants";
+import { timeSuccessAlert } from "src/utils/helpers/alert-helper";
 
 import { MeetingModel } from "src/models/meeting";
 
 export default function MeetingList({meetings, onMeetingClick, isArchive} : {meetings?: MeetingModel[], onMeetingClick: (meeting: MeetingModel) => void, isArchive: boolean}) {
-
   const getLink = (id: string) => `http://${API_CONSTANTS.clientBaseUrl}/room/${id}`;
   
 
@@ -18,6 +18,7 @@ export default function MeetingList({meetings, onMeetingClick, isArchive} : {mee
     navigator.clipboard.writeText(link);
     timeSuccessAlert(`Copied ${link}`);
   };
+
 
   return meetings != null && meetings?.length > 0 ? (
     <TableContainer>
@@ -47,11 +48,16 @@ export default function MeetingList({meetings, onMeetingClick, isArchive} : {mee
                     <ContentCopy/>
                     </Button>
                   </Tooltip>
-                  <Tooltip title="Join room">
-                    <Button color="primary" variant="text" onClick={() => copyLink(m.id)}>
-                      <Login />
-                    </Button>
-                  </Tooltip>
+                  {
+                    isArchive && 
+                    <Tooltip title="Join room">
+                      <Link to={getLink(m.id)}>
+                        <Button color="primary" variant="text"  >
+                          <Login />
+                        </Button>
+                      </Link>
+                    </Tooltip>
+                  }
                 </TableCell>
               </TableRow>
               )})}

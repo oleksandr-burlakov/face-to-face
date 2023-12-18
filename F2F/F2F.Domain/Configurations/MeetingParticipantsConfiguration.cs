@@ -8,11 +8,5 @@ public class MeetingParticipantConfiguration : IEntityTypeConfiguration<MeetingP
 {
     void IEntityTypeConfiguration<MeetingParticipant>.Configure(
         EntityTypeBuilder<MeetingParticipant> builder
-    )
-    {
-        builder
-            .HasOne(x => x.Meeting)
-            .WithMany(x => x.MeetingParticipants)
-            .HasForeignKey(x => x.MeetingId);
-    }
+    ) { }
 }

@@ -1,5 +1,4 @@
 ﻿using F2F.BLL.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 
@@ -16,28 +15,46 @@ namespace F2F.API.SignalRWebpack.Hubs
     {
         private readonly IClaimService _claimService;
         private readonly IUserService _userService;
+        private readonly IMeetingParticipantService _meetingParticipantService;
 
-        public RoomHub(IClaimService claimService, IUserService userService)
+        public RoomHub(
+            IClaimService claimService,
+            IUserService userService,
+            IMeetingParticipantService meetingParticipantService
+        )
         {
             _claimService = claimService;
             _userService = userService;
+            _meetingParticipantService = meetingParticipantService;
         }
 
-        public async Task JoinRoom(string username)
+        public async Task JoinRoom(string username, Guid meetingId)
         {
             var userInfo = new UserInfo()
             {
                 userName = username,
                 connectionId = Context.ConnectionId,
             };
-            await Clients.Others.SendAsync("onJoinRoom", JsonSerializer.Serialize(userInfo));
+            var otherParticipants = await _meetingParticipantService.GetByMeetingIdAsync(meetingId);
+            await _meetingParticipantService.InsertAsync(
+                new DLL.Entities.MeetingParticipant()
+                {
+                    ParticipantId = Context.ConnectionId,
+                    UserName = username,
+                    MeetingId = meetingId,
+                }
+            );
+            await Clients
+                .Clients(otherParticipants.Select(x => x.ParticipantId))
+                .SendAsync("onJoinRoom", JsonSerializer.Serialize(userInfo));
         }
 
-        public async Task InformJoinedUser(string username, string user)
+        public async Task InformJoinedUser(string user)
         {
+            var myInfo = await _meetingParticipantService.GetByConnectionId(Context.ConnectionId);
             var userInfo = new UserInfo()
             {
-                userName = username,
+                userName = myInfo?.UserName,
                 connectionId = Context.ConnectionId,
             };
             await Clients
@@ -45,15 +62,14 @@ namespace F2F.API.SignalRWebpack.Hubs
                 .SendAsync("onInformJoinedUser", JsonSerializer.Serialize(userInfo));
         }
 
-        public async Task SendSignal(string signal, string user, bool isReturn)
+        public async Task SendSignal(string user)
         {
-            await Clients
-                .Client(user)
-                .SendAsync("onSendSignal", Context.ConnectionId, signal, isReturn);
+            await Clients.Client(user).SendAsync("onSendSignal", Context.ConnectionId);
         }
 
         public override async Task OnDisconnectedAsync(System.Exception exception)
         {
+            await _meetingParticipantService.DeleteByParticipantIdAsync(Context.ConnectionId);
             await Clients.All.SendAsync("onUserDisconnect", Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
         }

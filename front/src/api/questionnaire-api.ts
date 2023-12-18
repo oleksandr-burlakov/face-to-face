@@ -25,4 +25,6 @@ const getMyQuestionnaires = async () => api.get<GenericResponse<GetMyQuestionnai
 
 const deleteQuestionnaire = async (id: string) => api.delete(`/Questionnaire/delete?id=${id}`);
 
-export { addQuestionnaire, getMyQuestionnaires, updateQuestionnaire, deleteQuestionnaire};
+const getQuestionnaire = async (id: string) => api.get<GenericResponse<GetMyQuestionnaireModelType>>(`/Questionnaire/get?id=${id}`);
+
+export { addQuestionnaire, getMyQuestionnaires, updateQuestionnaire, deleteQuestionnaire, getQuestionnaire};

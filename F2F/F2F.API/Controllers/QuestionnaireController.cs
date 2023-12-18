@@ -57,5 +57,16 @@ namespace F2F.API.Controllers
             await _questionnaireService.DeleteAsync(id);
             return NoContent();
         }
+
+        [Authorize]
+        [HttpGet("get")]
+        public async Task<IActionResult> GetAsync(Guid id)
+        {
+            return Ok(
+                ApiResult<GetMyQuestionnairesResponseModel>.Success(
+                    await _questionnaireService.GetAsync(id)
+                )
+            );
+        }
     }
 }

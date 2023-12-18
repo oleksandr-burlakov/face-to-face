@@ -52,4 +52,10 @@ internal class QuestionnaireService : IQuestionnaireService
         _context.Questionnaires.Remove(questionnaire);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<GetMyQuestionnairesResponseModel> GetAsync(Guid id)
+    {
+        var questionnaire = await _context.Questionnaires.FirstOrDefaultAsync(q => q.Id == id);
+        return _mapper.Map<GetMyQuestionnairesResponseModel>(questionnaire);
+    }
 }

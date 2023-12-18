@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Outlet, Navigate, useRoutes } from 'react-router-dom';
+import { Outlet, Navigate, useRoutes, useLocation  } from 'react-router-dom';
 
 import { useAuth } from 'src/hooks/use-auth';
 
@@ -13,23 +13,26 @@ export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const QuestionsPage = lazy(() => import('src/pages/questions'))
+export const RoomPage = lazy(() => import('src/pages/room'))
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   const { token } = useAuth();
+  const location = useLocation();
+  const locationPath = location.pathname;
 
   const routes = useRoutes([
     {
       element: (
-        token ? 
+        token != null ? 
         (
         <DashboardLayout>
           <Suspense>
             <Outlet />
           </Suspense>
         </DashboardLayout>) :
-        (<Navigate to="/login"/>)
+        ( <Navigate to={`/login?redirectTo=${locationPath}`}/>)
       ),
       children: [
         { element: <IndexPage />, index: true },
@@ -56,8 +59,17 @@ export default function Router() {
               element: <MeetingsPage/>
             }
           ]
-        }
+        },
       ],
+    },
+    {
+      path: 'room',
+      children: [
+        {
+          path: ':id',
+          element: <RoomPage />
+        }
+      ]
     },
     {
       path: 'login',

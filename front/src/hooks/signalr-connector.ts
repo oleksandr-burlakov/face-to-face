@@ -12,7 +12,7 @@ export type userInfo = {
 export type ConnectorType = {
     onUserJoinedRoom: (data: userInfo) => void,
         onInformJoinedUser: (data: userInfo) => void,
-        onSendSignal: (connectionId: string, signal: string, isReturn: boolean) => void,
+        onSendSignal: (connectionId: string) => void,
         onUserDisconnect: (connectionId: string) => void
 };
 
@@ -37,8 +37,8 @@ class Connector {
         this.connection.on('onJoinRoom', (data: any) => {
             params.onUserJoinedRoom(JSON.parse(data))
         });
-        this.connection.on('onSendSignal', (connectionId: string, signal: string, isReturn: boolean) => {
-            params.onSendSignal(connectionId, signal, isReturn);
+        this.connection.on('onSendSignal', (connectionId: string) => {
+            params.onSendSignal(connectionId);
         })
         this.connection.on('onUserDisconnect', (connectionId: string) => {
             params.onUserDisconnect(connectionId);
@@ -57,16 +57,16 @@ class Connector {
         }
     }
 
-    public joinRoom = (userName: string) => {
-        this.connection.send("joinRoom", userName);
+    public joinRoom = (userName: string, meetingId: string) => {
+        this.connection.send("joinRoom", userName, meetingId);
     }
 
-    public informJoinedUser = (username: string, user: string) => {
-        this.connection.send("informJoinedUser", username, user);
+    public informJoinedUser = (user: string) => {
+        this.connection.send("informJoinedUser", user);
     }
 
-    public sendSignal = (signal: string, user: string, isReturn: boolean) => {
-        this.connection.send("sendSignal", signal, user, isReturn);
+    public sendSignal = (user: string) => {
+        this.connection.send("sendSignal",  user);
     }
 
     public getConnectionId = () => this.connection.connectionId

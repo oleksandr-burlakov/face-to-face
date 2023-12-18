@@ -4,6 +4,7 @@ using F2F.DLL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace F2F.DLL.Migrations
 {
     [DbContext(typeof(F2FContext))]
-    partial class F2FContextModelSnapshot : ModelSnapshot
+    [Migration("20231122162720_Update Meeting Participant info")]
+    partial class UpdateMeetingParticipantinfo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,9 +204,8 @@ namespace F2F.DLL.Migrations
                     b.Property<Guid>("MeetingId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ParticipantId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("ParticipantId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserName")
                         .IsRequired()

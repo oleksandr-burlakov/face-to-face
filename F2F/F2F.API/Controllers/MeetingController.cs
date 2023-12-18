@@ -40,5 +40,12 @@ namespace F2F.API.Controllers
             await _meetingService.UpdateAsync(model);
             return Ok();
         }
+
+        [Authorize]
+        [HttpGet("get")]
+        public async Task<IActionResult> GetAsync([FromQuery] Guid id)
+        {
+            return Ok(ApiResult<MeetingModel>.Success(await _meetingService.GetAsync(id)));
+        }
     }
 }

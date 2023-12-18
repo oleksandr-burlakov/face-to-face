@@ -98,7 +98,7 @@ export function MeetingView() {
             <MeetingList onMeetingClick={editMeeting} meetings={meetings?.filter(m => !m.isFinished)} isArchive={false} />
           </CustomTabPanel>
           <CustomTabPanel value={value} index={1}>
-            <MeetingList onMeetingClick={editMeeting} meetings={meetings?.filter(m => m.isFinished)} isArchive={true} />
+            <MeetingList onMeetingClick={editMeeting} meetings={meetings?.filter(m => m.isFinished)} isArchive />
           </CustomTabPanel>
         </Box>
       </Card>

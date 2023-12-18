@@ -23,8 +23,16 @@ const addMeeting = async (model: AddMeetingModel) =>
     }
   );
 
+  const getMeeting = async (id: string) => 
+  api.get<GenericResponse<MeetingModel>>(
+    `${baseUrl}/get?id=${id}`,
+    {
+      method: 'GET'
+    }
+  );
+
 const getMyMeetings = async () => 
   api.get<GenericResponse<MeetingModel[]>>(`${baseUrl}/get-my`);
 
 
-export { addMeeting, getMyMeetings, updateMeeting };
+export { addMeeting, getMyMeetings, updateMeeting, getMeeting };

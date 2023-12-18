@@ -1,7 +1,7 @@
-import Peer from "peerjs";
+import { MediaConnection } from "peerjs";
 
 export type RoomUser = {
   stream: MediaStream,
-  peer: Peer|null,
+  call: MediaConnection | null,
   id: string
 };

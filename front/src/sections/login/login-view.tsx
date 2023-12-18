@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSearchParams} from 'react-router-dom';
 
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -25,6 +26,8 @@ import { useRouter } from '../../routes/hooks';
 
 export default function LoginView() {
   const authContext = useAuth();
+  const [query] = useSearchParams();
+
 
   const [formData, setFormData] = useState({username: "",password: ""});
 
@@ -48,7 +51,12 @@ export default function LoginView() {
       if (accountDataResponse.data.succeeded) {
         authContext.setAccountInfo(accountDataResponse.data.result);
       }
-      router.push('/');
+      const redirectTo = query.get('redirectTo');
+      if (redirectTo) {
+        router.push(redirectTo);
+      } else {
+        router.push('/');
+      }
     }
   };
 
