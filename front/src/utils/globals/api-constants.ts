@@ -5,5 +5,6 @@ const base=  `https://localhost:${httpsPort}`;
 export const API_CONSTANTS = {
   url: `${base}/api/`,
   hub:`${base}/hub/`,
+  aiHub:`${base}/ai-hub/`,
   clientBaseUrl : `localhost:3030`
 };

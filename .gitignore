@@ -1,0 +1,7 @@
+F2F/llama-2-13b/checklist.chk
+F2F/llama-2-13b/consolidated.00.pth
+F2F/llama-2-13b/consolidated.01.pth
+F2F/llama-2-13b/llama-2-7b.Q4_K_M.gguf
+F2F/llama-2-13b/params.json
+*.st
+F2F/F2F.API/SavedSessionPath/ExecutorState.json

@@ -49,7 +49,7 @@ export default function MeetingList({meetings, onMeetingClick, isArchive} : {mee
                     </Button>
                   </Tooltip>
                   {
-                    isArchive && 
+                    !isArchive && 
                     <Tooltip title="Join room">
                       <Link to={getLink(m.id)}>
                         <Button color="primary" variant="text"  >

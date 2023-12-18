@@ -93,7 +93,6 @@ export function RoomView() {
         const localPeer = new Peer(`${connectionId}-${userToSignal}`, {
           host: "localhost",
           port: 9000,
-          path: "/myapp",
         });
   
         if (localStream)
@@ -116,7 +115,6 @@ export function RoomView() {
           const localPeer = new Peer(`${connectionId}-${userToSignal}`, {
             host: "localhost",
             port: 9000,
-            path: "/myapp",
           });
   
           localPeer.on('call', (call) => {

@@ -61,5 +61,6 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 app.MapHub<RoomHub>("/hub");
+app.MapHub<GenerativeAIHub>("/ai-hub");
 
 app.Run();

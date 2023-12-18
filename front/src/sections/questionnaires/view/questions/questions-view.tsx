@@ -11,6 +11,7 @@ import { activeQuestionnaireAtom } from 'src/state';
 import { QuestionModelType, AddQuestionModelType } from 'src/models/question';
 import { addQuestion, deleteQuestion, getByQuestionnaire } from 'src/api/question-api';
 
+import AskAi from './ask-ai';
 import QuestionItem from './question-item';
 import AddQuestionItem from './add-question-item';
 
@@ -45,19 +46,24 @@ export default function QuestionsView() {
   }
 
   return (
-    <Container>
+    <Container maxWidth={false}>
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
         <Typography variant="h4">{activeQuestionnaire ? `"${activeQuestionnaire.title}"` : ""} Questions</Typography>
       </Stack>
-      <Card>
-        <Stack padding={4} rowGap={2}>
-          <Typography marginBottom={2} variant='h4'>List of questions</Typography>
-          { id && <AddQuestionItem addQuestion={insertQuestion} questionnaireId={id} />}
-          {
-            questions.map((x) => <QuestionItem onDelete={removeQuestion} item={x} key={x.id} />)
-          }
-        </Stack>
-      </Card>
+      <Stack direction='row' columnGap={5} justifyContent='center'>
+        <Card sx={{"minWidth": "70%"}}>
+          <Stack padding={4} rowGap={2}>
+            <Typography marginBottom={2} variant='h4'>List of questions</Typography>
+            { id && <AddQuestionItem addQuestion={insertQuestion} questionnaireId={id} />}
+            {
+              questions.map((x) => <QuestionItem onDelete={removeQuestion} item={x} key={x.id} />)
+            }
+          </Stack>
+        </Card>
+        <Card sx={{'minWidth': '30%'}}>
+          <AskAi />
+        </Card>
+      </Stack>
     </Container>
   );
 }
