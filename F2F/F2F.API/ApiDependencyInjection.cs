@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
@@ -10,6 +11,8 @@ public static class ApiDependencyInjection
     public static void AddJwt(this IServiceCollection services, IConfiguration configuration)
     {
         var secretKey = configuration.GetValue<string>("JwtConfiguration:SecretKey");
+        var googleApi = configuration["GoogleAPI:Id"];
+        var googleSecret = configuration["GoogleAPI:Secret"];
 
         var key = Encoding.ASCII.GetBytes(secretKey);
 
@@ -19,6 +22,7 @@ public static class ApiDependencyInjection
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
+            .AddCookie("Identity.Application")
             .AddJwtBearer(x =>
             {
                 x.RequireHttpsMetadata = false;
@@ -30,6 +34,18 @@ public static class ApiDependencyInjection
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+            })
+            .AddCookie("Identity.External")
+            .AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = googleApi;
+                googleOptions.ClientSecret = googleSecret;
+                googleOptions.Scope.Add("profile");
+                googleOptions.SignInScheme = Microsoft
+                    .AspNetCore
+                    .Identity
+                    .IdentityConstants
+                    .ExternalScheme;
             });
     }
 

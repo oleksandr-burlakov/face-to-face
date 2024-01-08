@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { API_CONSTANTS } from '../utils/globals/api-constants';
 
-const api = axios.create({ baseURL: API_CONSTANTS.url });
+const api = axios.create({ baseURL: API_CONSTANTS.url, withCredentials: true });
 
 api.interceptors.request.use(
   (config) => {

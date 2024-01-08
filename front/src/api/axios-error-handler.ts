@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { timeErrorAlert } from 'src/utils/helpers/alert-helper';
 
@@ -7,6 +8,7 @@ import { useAuth } from '../hooks/use-auth';
 
 const AxiosErrorHandler = (props: { children: any }) => {
   const auth = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const responseInterceptor = api.interceptors.response.use(
@@ -30,6 +32,8 @@ const AxiosErrorHandler = (props: { children: any }) => {
             throw new Error('No refresh token yet');
           } catch (localError) {
             auth?.setToken(null);
+            auth?.deleteAuthenticationCookie();
+            navigate('/');
           }
         }
 

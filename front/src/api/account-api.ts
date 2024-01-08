@@ -15,4 +15,15 @@ const authenticate = async (model: AuthenticateModelType) =>
 
 const getInfo = async () => api.get<GenericResponse<GetInfoResponseType>>('/Account/get-info');
 
-export { getInfo, authenticate };
+const googleLogin = async () =>
+  api.post(
+    `/Account/external-login?provider=Google`,
+    {
+      method: 'POST',
+    },
+    {
+      headers: {"Access-Control-Allow-Origin": "http://localhost:3030", 'Access-Control-Allow-Credentials':true}
+    }
+  );
+
+export { getInfo, googleLogin, authenticate };

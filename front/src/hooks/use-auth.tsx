@@ -8,7 +8,32 @@ export interface AuthContextType {
   setToken: (newToken: string | null) => void,
   accountInfo: GetInfoResponseType | null,
   setAccountInfo: (accountInfo: GetInfoResponseType | null) => void,
+  cookieToken: () => string | null,
+  deleteAuthenticationCookie : () => void
 }
+
+function getCookie(name: string) {
+  const dc = document.cookie;
+  const prefix = `${name  }=`;
+  let begin = dc.indexOf(`; ${  prefix}`);
+  let end = dc.length;
+  if (begin === -1) {
+      begin = dc.indexOf(prefix);
+      if (begin !== 0) return null;
+  }
+  else
+  {
+      begin += 2;
+      end = document.cookie.indexOf(";", begin);
+      if (end === -1) {
+        end = dc.length;
+      }
+  }
+  // because unescape has been deprecated, replaced with decodeURI
+  // return unescape(dc.substring(begin + prefix.length, end));
+  return decodeURI(dc.substring(begin + prefix.length, end));
+} 
+
 
 const AuthContext = React.createContext<AuthContextType | null>(null);
 
@@ -27,6 +52,12 @@ const AuthProvider = ({ children }: AuthProviderPropTypes) => {
 
   const setAccountInfo = (localInfo: GetInfoResponseType | null) => {
     setAccountInfo_(localInfo);
+  }
+
+  const cookieToken = () => getCookie('token');
+
+  const deleteAuthenticationCookie = () => {
+    document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
   }
 
   useEffect(() => {
@@ -51,7 +82,9 @@ const AuthProvider = ({ children }: AuthProviderPropTypes) => {
       token,
       setToken,
       accountInfo,
-      setAccountInfo
+      setAccountInfo,
+      cookieToken,
+      deleteAuthenticationCookie
     }),
     [token, accountInfo]
   );

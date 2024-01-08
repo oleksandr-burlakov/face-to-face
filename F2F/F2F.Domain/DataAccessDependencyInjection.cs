@@ -43,7 +43,21 @@ public static class DataAccessDependencyInjection
         services
             .AddIdentityCore<User>(options => options.SignIn.RequireConfirmedAccount = false)
             .AddRoles<Role>()
-            .AddEntityFrameworkStores<F2FContext>();
+            .AddEntityFrameworkStores<F2FContext>()
+            .AddSignInManager()
+            .AddTokenProvider(
+                TokenOptions.DefaultProvider,
+                typeof(DataProtectorTokenProvider<User>)
+            )
+            .AddTokenProvider(TokenOptions.DefaultEmailProvider, typeof(EmailTokenProvider<User>))
+            .AddTokenProvider(
+                TokenOptions.DefaultPhoneProvider,
+                typeof(PhoneNumberTokenProvider<User>)
+            )
+            .AddTokenProvider(
+                TokenOptions.DefaultAuthenticatorProvider,
+                typeof(AuthenticatorTokenProvider<User>)
+            );
 
         services.Configure<IdentityOptions>(options =>
         {

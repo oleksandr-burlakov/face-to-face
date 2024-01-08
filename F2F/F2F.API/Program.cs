@@ -44,7 +44,11 @@ app.UseCors(
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials()
-            .SetIsOriginAllowed(origin => true)
+            .WithOrigins(
+                "http://localhost:3030",
+                "https://localhost:7243",
+                "https://accounts.google.com"
+            )
 );
 
 app.UseRouting();

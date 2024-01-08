@@ -18,14 +18,18 @@ export const RoomPage = lazy(() => import('src/pages/room'))
 // ----------------------------------------------------------------------
 
 export default function Router() {
-  const { token } = useAuth();
+  const { token, setToken, cookieToken,setAccountInfo, accountInfo } = useAuth();
   const location = useLocation();
   const locationPath = location.pathname;
+  const authenticationCookie = cookieToken();
+
+  
+
 
   const routes = useRoutes([
     {
       element: (
-        token != null ? 
+        token != null  ? 
         (
         <DashboardLayout>
           <Suspense>
@@ -65,7 +69,7 @@ export default function Router() {
     {
       path: 'room',
       element: (
-        token != null ? 
+        token != null  ? 
           <Outlet /> :
         ( <Navigate to={`/login?redirectTo=${locationPath}`}/>)
       ),
@@ -78,7 +82,11 @@ export default function Router() {
     },
     {
       path: 'login',
-      element: <LoginPage />,
+      element: ( 
+        token != null  ?
+        ( <Navigate to="/"/>) :
+        <LoginPage />
+      ),
     },
     {
       path: '404',
