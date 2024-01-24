@@ -5,6 +5,7 @@ import React, { useRef, useState, useEffect } from "react"
 
 import { Stack } from "@mui/material"
 
+import { useAuth } from "src/hooks/use-auth";
 import Connector, { userInfo } from 'src/hooks/signalr-connector';
 
 import { getMeeting } from "src/api/meeting-api";
@@ -26,11 +27,13 @@ const videoConstraints = {
 
 export function RoomView() {
   const {id} = useParams();
+  const { accountInfo } = useAuth();
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [remoteVideos, setRemoteVideos] = useRecoilState(roomUserAtom);
   const [questionnaire, setQuestionnaire] = useState<GetMyQuestionnaireModelType | null>(null);
   const [questions, setQuestions] = useState<QuestionModelType[]>([]);
   const onLeavePageCallback = useRef(Promise<void>);
+  const [meetingOwner, setMeetingOwner] = useState<string>();
 
   useEffect(() => {
     async function getQuestionnaireWithQuestions() {
@@ -38,8 +41,10 @@ export function RoomView() {
         return;
       const meeting = await getMeeting(id);
       if (meeting.data.succeeded) {
+        const {ownerId} = meeting.data.result;
+        setMeetingOwner(ownerId);
         const preferableQuestionnaire = meeting.data.result.preferableQuestionnaireId;
-        if (preferableQuestionnaire) {
+        if (preferableQuestionnaire && ownerId === accountInfo.id) {
           const questionnaireResponse = await getQuestionnaire(preferableQuestionnaire);
           if (questionnaireResponse.data.succeeded) {
             setQuestionnaire(questionnaireResponse.data.result);
@@ -153,7 +158,10 @@ export function RoomView() {
     }
   }, [setRemoteVideos, setStream, stream])
   
-
+  useEffect(() => {
+    console.log(remoteVideos);
+  }, [remoteVideos]);
+  
   const toggleMic = () => {
     stream?.getAudioTracks().forEach(a => {a.enabled = !a.enabled});
   };
@@ -166,7 +174,7 @@ export function RoomView() {
 
   return (
     <Stack flexDirection="row" sx={{height:'100vh', backgroundColor: 'rgb(249, 250, 251)'}}>
-      <RoomSidebar meetingId={id} questions={questions} questionnaire={questionnaire} />
+      {(meetingOwner === accountInfo.id) && <RoomSidebar meetingId={id} questions={questions} questionnaire={questionnaire} />}
       <RoomVideos stream={stream} remoteVideos={remoteVideos} toggleCam={toggleCam} toggleMic={toggleMic}  />
     </Stack>
   )

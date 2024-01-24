@@ -18,7 +18,6 @@ export default function GoogleLoginButton() {
   const handleLogin = async () => {
     const containsQuestionMark = window.location.href.indexOf('?') !== -1;
     const currentUrl = encodeURIComponent( `${window.location.href}${containsQuestionMark ? '&' : '?'}successGoogle=true`);
-    console.log(currentUrl);
     window.open(`https://localhost:7243/api/Account/external-login?provider=Google&returnUrl=${currentUrl}`, "_self")
   };
 

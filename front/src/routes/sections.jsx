@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { Outlet, Navigate, useRoutes, useLocation  } from 'react-router-dom';
+import { Outlet, Navigate, useRoutes, useLocation,useSearchParams  } from 'react-router-dom'
 
 import { useAuth } from 'src/hooks/use-auth';
 
@@ -20,7 +20,9 @@ export default function Router() {
   const location = useLocation();
   const locationPath = location.pathname;
   const authenticationCookie = cookieToken();
+  const [query] = useSearchParams();
 
+  const redirectTo = query.get('redirectTo');
   
 
 
@@ -80,6 +82,8 @@ export default function Router() {
       path: 'login',
       element: ( 
         token != null  ?
+        redirectTo ?
+        (<Navigate to={redirectTo}/>) :
         ( <Navigate to="/"/>) :
         <LoginPage />
       ),

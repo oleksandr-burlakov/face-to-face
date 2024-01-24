@@ -14,7 +14,6 @@ import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { getInfo, authenticate } from 'src/api/account-api';
-import { GetInfoResponseType } from 'src/models/account/get-info-model';
 
 import Logo from '../../components/logo';
 import { bgGradient } from '../../theme/css';
@@ -35,18 +34,17 @@ export default function LoginView() {
     const authenticateCookie = authContext.cookieToken();
     if (!authContext.token && authenticateCookie) {
       const group = JSON.parse(decodeURIComponent(authenticateCookie));
-      console.log(group);
       const {Token} = JSON.parse(decodeURIComponent(authenticateCookie));
-      console.log(Token);
       localStorage.setItem('token', Token);
       authContext.setToken(Token);
     }
     if (!authContext.accountInfo) {
       const accountDataResponse = await getInfo();
       if (accountDataResponse.data.succeeded) {
-        setAccountInfo(accountDataResponse.data.result);
+        authContext.setAccountInfo(accountDataResponse.data.result);
       }
     }
+
   };
 
   if (successGoogle) {
@@ -71,6 +69,12 @@ export default function LoginView() {
     if (result.data.succeeded && authContext) {
       localStorage.setItem('token', result.data.result.token);
       authContext.setToken(result.data.result.token);
+      if (!authContext.accountInfo) {
+        const accountDataResponse = await getInfo();
+        if (accountDataResponse.data.succeeded) {
+          authContext.setAccountInfo(accountDataResponse.data.result);
+        }
+      }
       const redirectTo = query.get('redirectTo');
       if (redirectTo) {
         router.push(redirectTo);
@@ -172,7 +176,3 @@ export default function LoginView() {
     </Box>
   );
 }
-function setAccountInfo(result: GetInfoResponseType) {
-  throw new Error('Function not implemented.');
-}
-
