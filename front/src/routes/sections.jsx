@@ -70,9 +70,9 @@ export default function Router() {
       path: 'room',
       element: (
         token != null  ? 
-          <Outlet /> :
+        <Outlet /> :
         ( <Navigate to={`/login?redirectTo=${locationPath}`}/>)
-      ),
+        ),
       children: [
         {
           path: ':id',

@@ -1,5 +1,5 @@
 
-import { SendDataModel } from 'src/models/records/';
+import { SendDataModel, EndRecordModel } from 'src/models/records/';
 
 import api from './axios';
 
@@ -14,5 +14,15 @@ const sendData = async (model: SendDataModel) =>
     }
   );
 
+const endRecord = async (model: EndRecordModel) =>
+  api.post<void>(
+    `/${baseUrl}/end-record`,
+    model,
+    {
+      method: 'POST',
+    }
+  );
+  
 
-export {  sendData} ;
+
+export { sendData, endRecord } ;

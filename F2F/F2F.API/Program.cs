@@ -7,6 +7,8 @@ using F2F.BLL;
 using F2F.BLL.Models.Validators;
 using F2F.API.Filters;
 using F2F.API.SignalRWebpack.Hubs;
+using System.Speech.Recognition;
+using System.Speech.AudioFormat;
 
 var builder = WebApplication.CreateBuilder(args);
 

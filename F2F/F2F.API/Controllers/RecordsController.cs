@@ -1,7 +1,7 @@
 ﻿using F2F.BLL.Models.Records;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
+using NReco.VideoConverter;
 
 namespace F2F.API.Controllers
 {
@@ -18,10 +18,29 @@ namespace F2F.API.Controllers
             {
                 fileMode = FileMode.Append;
             }
-            using (var fs = new FileStream(fileName, fileMode, FileAccess.Write))
+            using (var fileStream = new FileStream(fileName, fileMode))
             {
-                await fs.WriteAsync(bytes, 0, bytes.Length);
+                fileStream.Write(bytes, 0, bytes.Length);
             }
+            return Ok();
+        }
+
+        [HttpPost("end-record")]
+        [AllowAnonymous]
+        public async Task<IActionResult> EndRecord(
+            [FromBody] EndRecordRequest model,
+            CancellationToken cancellationToken
+        )
+        {
+            var fileName = $"test-{model.MeetingId}.webm";
+            if (!System.IO.File.Exists(fileName))
+            {
+                return BadRequest("File doesn't exists");
+            }
+            var newFileName = $"{fileName.Split(".")[0]}.mp4";
+            var ffMpeg = new NReco.VideoConverter.FFMpegConverter();
+            ffMpeg.ConvertMedia(fileName, newFileName, Format.mp4);
+            System.IO.File.Delete(fileName);
             return Ok();
         }
     }

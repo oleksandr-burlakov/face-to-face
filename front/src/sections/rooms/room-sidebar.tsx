@@ -6,9 +6,9 @@ import { Box, Stack, Button, Checkbox, Typography, FormControlLabel } from "@mui
 
 import { errorAlert } from "src/utils/helpers/alert-helper";
 
-import { sendData } from "src/api/record-api";
 import { meetingQuestionnaireAtom } from "src/state";
 import { QuestionModelType } from "src/models/question";
+import { sendData, endRecord } from "src/api/record-api";
 import { GetMyQuestionnaireModelType } from "src/models/questionnaire";
 
 
@@ -39,9 +39,14 @@ export function RoomSidebar({questions, questionnaire, meetingId }: {questions: 
       });
       const recordedChunks: any[] = [];
       const recorder = new MediaRecorder(videoStream, {mimeType: "video/webm;codecs=h264,opus"});
+      recorder.stream.getAudioTracks()[0].onended = async function () {
+        await endRecord({
+          meetingId
+        });
+      };
       recorder.start(1000);
       recorder.ondataavailable = async (blobEvent) => {
-        handleDataAvailable(blobEvent, recordedChunks);
+        await handleDataAvailable(blobEvent, recordedChunks);
         // const blob = await  blobEvent.data.arrayBuffer();
       };
 
@@ -51,21 +56,14 @@ export function RoomSidebar({questions, questionnaire, meetingId }: {questions: 
     } catch {
       errorAlert("You need to share this tab in order to record it");
     }
-    // const {displaySurface} = videoStream.getVideoTracks()[0].getSettings();
-    // if (displaySurface != "window" || displaySurface != "monitor") {
-      //   alert("SSSS")
-      // }
     };
 
-  function handleDataAvailable(event: any, recordedChunks: any[]) {
+  async function handleDataAvailable(event: any, recordedChunks: any[]) {
     console.log("data-available");
-    if (event.data.size > 0) {
-      recordedChunks.push(event.data);
+    if (event.data.size > 500) {
       console.log(recordedChunks);
-      download(recordedChunks);
-    } else {
-      // …
-    }
+      await download([event.data]);
+    } 
   }
   async function download(recordedChunks: any[]) {
     const data = new Blob(recordedChunks, {
@@ -74,13 +72,13 @@ export function RoomSidebar({questions, questionnaire, meetingId }: {questions: 
     const reader = new FileReader(); 
     reader.readAsDataURL(data); 
     reader.onloadend = async function () { 
-    const base64String = reader.result as string; 
-    const withoutKey = base64String.substr(base64String.indexOf(',') + 1); 
-    await sendData({
-      meetingId,
-      blob: withoutKey
-    });
-  } 
+      const base64String = reader.result as string; 
+      const withoutKey = base64String.substr(base64String.indexOf(',') + 1); 
+      await sendData({
+        meetingId,
+        blob: withoutKey
+      });
+    } 
   }
     
   const [sideBarOpen, setSideBarOpen] = useState<boolean>(true);
