@@ -30,4 +30,8 @@
     <ProjectReference Include="..\F2F.Domain\F2F.DLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="StaticFiles\" />
+  </ItemGroup>
+
 </Project>

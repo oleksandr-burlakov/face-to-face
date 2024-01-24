@@ -1,4 +1,5 @@
-﻿using F2F.DLL;
+﻿using F2F.BLL.Models.MeetingParticipant;
+using F2F.DLL;
 using F2F.DLL.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,13 +14,16 @@ public class MeetingParticipantService : IMeetingParticipantService
         _context = context;
     }
 
-    public async Task DeleteByParticipantIdAsync(string connectionId)
+    public async Task<DeleteParticipantResult> DeleteByParticipantIdAsync(string connectionId)
     {
         var participant = await _context.MeetingParticipants.FirstOrDefaultAsync(
             x => x.ParticipantId == connectionId
         );
+        var meetingId = participant?.MeetingId;
         _context.MeetingParticipants.Remove(participant);
         await _context.SaveChangesAsync();
+        var anyLeft = await _context.MeetingParticipants.AnyAsync(x => x.MeetingId == meetingId);
+        return new DeleteParticipantResult() { IsAnyoneLeft = anyLeft, MeetingId = meetingId };
     }
 
     public async Task<MeetingParticipant> GetByConnectionId(string connectionId)

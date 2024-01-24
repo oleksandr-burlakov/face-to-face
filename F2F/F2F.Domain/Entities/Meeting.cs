@@ -17,7 +17,4 @@ public class Meeting : BaseEntity
     public bool IsFinished { get; set; }
     public Guid? PreferableQuestionnaireId { get; set; }
     public Questionnaire? PreferableQuestionnaire { get; set; }
-    public ICollection<MeetingMessage> MeetingMessages { get; set; }
-    public ICollection<MeetingQuestionPoint> QuestionPoints { get; set; }
-    public ICollection<SuspendedBehaviour> SuspendedBehaviours { get; set; }
 }

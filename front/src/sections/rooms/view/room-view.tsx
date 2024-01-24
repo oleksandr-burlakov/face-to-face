@@ -1,7 +1,7 @@
 import { useRecoilState } from "recoil";
 import { useParams } from "react-router-dom";
 import Peer, { MediaConnection } from "peerjs";
-import React, { useState, useEffect } from "react"
+import React, { useRef, useState, useEffect } from "react"
 
 import { Stack } from "@mui/material"
 
@@ -30,6 +30,7 @@ export function RoomView() {
   const [remoteVideos, setRemoteVideos] = useRecoilState(roomUserAtom);
   const [questionnaire, setQuestionnaire] = useState<GetMyQuestionnaireModelType | null>(null);
   const [questions, setQuestions] = useState<QuestionModelType[]>([]);
+  const onLeavePageCallback = useRef(Promise<void>);
 
   useEffect(() => {
     async function getQuestionnaireWithQuestions() {
@@ -55,6 +56,7 @@ export function RoomView() {
   }, [id]);
 
   useEffect(() => {
+    setRemoteVideos([]);
     async function getStream() {
       const returnValue = await navigator.mediaDevices.getUserMedia({video: videoConstraints, audio: true});
       setStream(returnValue); 
@@ -76,7 +78,7 @@ export function RoomView() {
         createPeer(connectionId, stream);
       };
       
-      const { joinRoom, sendSignal, informJoinedUser, waitForHubConnection, getConnectionId} = Connector({
+      const { joinRoom, sendSignal, informJoinedUser, waitForHubConnection, getConnectionId, disconnect} = Connector({
         onUserJoinedRoom: joinRoomFunc,
         onInformJoinedUser: informUser,
         onSendSignal: sendSignalFunc,
@@ -134,16 +136,23 @@ export function RoomView() {
         if (id)
           joinRoom('user', id);
       });
+      return disconnect;
     };
 
     if (!stream) {
       getStream()
     } else {
-      initPeers();
-    }
-  }, [id, setRemoteVideos, setStream, stream])
-  
+      const disconnect = initPeers();
 
+      return () => {
+        async function localCallAsync() {
+          await disconnect()
+        }
+        localCallAsync();
+      };
+    }
+  }, [setRemoteVideos, setStream, stream])
+  
 
   const toggleMic = () => {
     stream?.getAudioTracks().forEach(a => {a.enabled = !a.enabled});

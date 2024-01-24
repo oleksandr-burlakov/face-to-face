@@ -1,7 +1,7 @@
 ﻿using F2F.BLL.Models.Records;
+using F2F.DLL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NReco.VideoConverter;
 
 namespace F2F.API.Controllers
 {
@@ -13,34 +13,17 @@ namespace F2F.API.Controllers
         {
             var bytes = Convert.FromBase64String(model.Blob);
             var fileName = $"test-{model.MeetingId}.webm";
+            var directoryPath = "D:\\Projects\\Diploma\\F2F\\F2F.API\\StaticFiles";
+            var filePath = Path.Combine(directoryPath, fileName);
             var fileMode = FileMode.Create;
-            if (System.IO.File.Exists(fileName))
+            if (System.IO.File.Exists(filePath))
             {
                 fileMode = FileMode.Append;
             }
-            using (var fileStream = new FileStream(fileName, fileMode))
+            using (var fileStream = new FileStream(filePath, fileMode))
             {
                 fileStream.Write(bytes, 0, bytes.Length);
             }
-            return Ok();
-        }
-
-        [HttpPost("end-record")]
-        [AllowAnonymous]
-        public async Task<IActionResult> EndRecord(
-            [FromBody] EndRecordRequest model,
-            CancellationToken cancellationToken
-        )
-        {
-            var fileName = $"test-{model.MeetingId}.webm";
-            if (!System.IO.File.Exists(fileName))
-            {
-                return BadRequest("File doesn't exists");
-            }
-            var newFileName = $"{fileName.Split(".")[0]}.mp4";
-            var ffMpeg = new NReco.VideoConverter.FFMpegConverter();
-            ffMpeg.ConvertMedia(fileName, newFileName, Format.mp4);
-            System.IO.File.Delete(fileName);
             return Ok();
         }
     }

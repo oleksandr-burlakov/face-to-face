@@ -6,9 +6,9 @@ import { Box, Stack, Button, Checkbox, Typography, FormControlLabel } from "@mui
 
 import { errorAlert } from "src/utils/helpers/alert-helper";
 
+import { sendData } from "src/api/record-api";
 import { meetingQuestionnaireAtom } from "src/state";
 import { QuestionModelType } from "src/models/question";
-import { sendData, endRecord } from "src/api/record-api";
 import { GetMyQuestionnaireModelType } from "src/models/questionnaire";
 
 
@@ -39,11 +39,6 @@ export function RoomSidebar({questions, questionnaire, meetingId }: {questions: 
       });
       const recordedChunks: any[] = [];
       const recorder = new MediaRecorder(videoStream, {mimeType: "video/webm;codecs=h264,opus"});
-      recorder.stream.getAudioTracks()[0].onended = async function () {
-        await endRecord({
-          meetingId
-        });
-      };
       recorder.start(1000);
       recorder.ondataavailable = async (blobEvent) => {
         await handleDataAvailable(blobEvent, recordedChunks);

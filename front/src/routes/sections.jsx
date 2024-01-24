@@ -8,9 +8,7 @@ import DashboardLayout from 'src/layouts/dashboard';
 import QuestionnairePage from 'src/pages/questionnaires';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
-export const BlogPage = lazy(() => import('src/pages/blog'));
 export const LoginPage = lazy(() => import('src/pages/login'));
-export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
 export const QuestionsPage = lazy(() => import('src/pages/questions'))
 export const RoomPage = lazy(() => import('src/pages/room'))
@@ -40,8 +38,6 @@ export default function Router() {
       ),
       children: [
         { element: <IndexPage />, index: true },
-        { path: 'products', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
         { 
           path: 'questionnaires',
           children: [

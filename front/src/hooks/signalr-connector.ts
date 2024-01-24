@@ -22,10 +22,10 @@ class Connector {
 
     private connection: signalR.HubConnection;
 
-
     static instance: Connector;
 
     constructor(params: ConnectorType) {
+        this.isCalledDisconnect = false;
         this.connection = new signalR.HubConnectionBuilder()
             .withUrl(URL)
             .withAutomaticReconnect()
@@ -72,9 +72,20 @@ class Connector {
     public getConnectionId = () => this.connection.connectionId
 
     public static getInstance(params: ConnectorType): Connector {
-        if (!Connector.instance)
+        if (!Connector.instance || Connector.instance.isCalledDisconnect)
             Connector.instance = new Connector(params);
         return Connector.instance;
+    }
+
+    private isCalledDisconnect: boolean = false;
+
+    public disconnect = async () => {
+        try {
+            await this.connection.stop();
+            this.isCalledDisconnect = true;
+        } catch (exception) {
+            console.log(exception)
+        }
     }
 }
 export default Connector.getInstance;

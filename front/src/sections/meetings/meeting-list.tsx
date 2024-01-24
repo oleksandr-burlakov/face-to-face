@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import {Login, ContentCopy, Edit as EditIcon} from '@mui/icons-material';
+import {Login, VideoFile, ContentCopy, Edit as EditIcon} from '@mui/icons-material';
 import { Table, Button, Tooltip, TableRow, TableBody, TableHead, TableCell, Typography, TableContainer } from "@mui/material";
 
 import { API_CONSTANTS } from "src/utils/globals/api-constants";
@@ -56,6 +56,16 @@ export default function MeetingList({meetings, onMeetingClick, isArchive} : {mee
                           <Login />
                         </Button>
                       </Link>
+                    </Tooltip>
+                  }
+                  {
+                    isArchive && (m.recordLink != null) &&
+                    <Tooltip title="Get record">
+                      <a target="_blank" href={`${API_CONSTANTS.staticFilesUrl  }/${  m.recordLink}`} rel="noreferrer">
+                        <Button color="primary" variant="text">
+                          <VideoFile/>
+                        </Button>
+                      </a>
                     </Tooltip>
                   }
                 </TableCell>

@@ -9,6 +9,7 @@ using F2F.API.Filters;
 using F2F.API.SignalRWebpack.Hubs;
 using System.Speech.Recognition;
 using System.Speech.AudioFormat;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -68,5 +69,15 @@ app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.MapControllers();
 app.MapHub<RoomHub>("/hub");
 app.MapHub<GenerativeAIHub>("/ai-hub");
+app.UseStaticFiles();
+app.UseStaticFiles(
+    new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(
+            Path.Combine(builder.Environment.ContentRootPath, "StaticFiles")
+        ),
+        RequestPath = "/StaticFiles"
+    }
+);
 
 app.Run();

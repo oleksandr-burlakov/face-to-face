@@ -1,4 +1,5 @@
 ﻿using F2F.BLL.Services;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 
@@ -13,19 +14,16 @@ namespace F2F.API.SignalRWebpack.Hubs
 
     public class RoomHub : Hub
     {
-        private readonly IClaimService _claimService;
-        private readonly IUserService _userService;
         private readonly IMeetingParticipantService _meetingParticipantService;
+        private readonly IRoomService _roomService;
 
         public RoomHub(
-            IClaimService claimService,
-            IUserService userService,
-            IMeetingParticipantService meetingParticipantService
+            IMeetingParticipantService meetingParticipantService,
+            IRoomService roomService
         )
         {
-            _claimService = claimService;
-            _userService = userService;
             _meetingParticipantService = meetingParticipantService;
+            _roomService = roomService;
         }
 
         public async Task JoinRoom(string username, Guid meetingId)
@@ -69,9 +67,14 @@ namespace F2F.API.SignalRWebpack.Hubs
 
         public override async Task OnDisconnectedAsync(System.Exception exception)
         {
-            await _meetingParticipantService.DeleteByParticipantIdAsync(Context.ConnectionId);
+            var result = await _meetingParticipantService.DeleteByParticipantIdAsync(
+                Context.ConnectionId
+            );
+            if (!result.IsAnyoneLeft && result.MeetingId.HasValue)
+            {
+                await _roomService.CloseRoom(result.MeetingId.Value);
+            }
             await Clients.All.SendAsync("onUserDisconnect", Context.ConnectionId);
-            await base.OnDisconnectedAsync(exception);
         }
 
         public async Task LeaveRoom(string user)
